@@ -32,25 +32,30 @@ We will be implimenting a RESTful api as our main form of client-server communic
 
 ## Users
 This endpoint will contain data about the User. It will look like this: 
+```
 {
-    &nbsp;&nbsp;&nbsp;User: \<string> 
-    &nbsp;&nbsp;&nbsp;ID: \<number>
-    &nbsp;&nbsp;&nbsp;Rooms: \<Object>
+    User: \<string> 
+    ID: \<number>
+    Rooms: \<Object>
 } 
+```
 * <ins>User</ins>: Defines the username a given user chose
 * <ins>ID</ins>: A special indentifier given to all users.
 * <ins>Rooms</ins>: A collection of Room IDs belonging to the rooms the user created or joined
 
 ## Rooms 
 This endpoint will contain data about a Room object. It will look like this:
+
+```
 {
-    &nbsp;&nbsp;&nbsp;ID: \<string>
-    &nbsp;&nbsp;&nbsp;Users: \<Object>
+    ID: <string>
+    Users: <Object>
 }
+```
 * <ins> ID </ins>: A special indentifier given to all rooms
 * <ins> Users </ins>: A collection of User IDs belonging to all participants in a room
 
-<br><br><br>
+<br><br>
 The two end points are bidirectional, meaning that for any room you can find all the users in it AND for every user you can find all rooms containing that user. This is done to reduce searching hassle, as users and rooms are closely connected in this app, so it'd be good to strongly link them together. 
 
 
