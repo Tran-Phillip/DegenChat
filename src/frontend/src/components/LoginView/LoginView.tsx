@@ -22,6 +22,14 @@ class LoginView extends React.Component<LoginViewProps, LoginViewState> {
             choiceSelected: false
         }
     }
+    async login() {
+        this.setState({
+            choiceSelected: true
+        })
+
+        await new Promise(r => setTimeout(r, 500)); // wait for our animation to finish
+        this.props.RedirectTo("/login")
+    }
 
     async register() {
         this.setState({
@@ -30,14 +38,14 @@ class LoginView extends React.Component<LoginViewProps, LoginViewState> {
         await new Promise(r => setTimeout(r, 500)); // wait for our animation to finish
         this.props.RedirectTo("/register");
     }
-    
+
     render() {
         return (
                 <div className="LoginComponent">
                     <img className="LoginPageLogo" src={Logo} />
                 <Fade delay={300}>
 
-                    <TransitionButton color={"primary"} text="Login" listen={this.state.choiceSelected} />
+                    <TransitionButton color={"primary"} text="Login" onClick={this.login.bind(this)} listen={this.state.choiceSelected} />
                     <TransitionButton color={"secondary"} text="Register" onClick={this.register.bind(this)} listen={this.state.choiceSelected}/>
                 </Fade>
 

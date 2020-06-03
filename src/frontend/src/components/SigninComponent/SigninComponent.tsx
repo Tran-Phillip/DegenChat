@@ -3,9 +3,11 @@ import Logo from "../../images/logo_black_white.png";
 import { TextField, createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 import TransitionButton from "../TransitionButton/TransitionButton"
 import TransitionTextInput from "../TransitionTextInput/TransitionTextInput"
-import "./RegisterView.scss"
+import "./SigninComponent.scss"
 import { Slide, Fade } from "react-awesome-reveal";
 import { Redirect } from "react-router-dom";
+
+// TODO: Combine with RegisterView
 
 const TextFieldTheme = createMuiTheme({
     overrides: {
@@ -38,17 +40,18 @@ const TextFieldTheme = createMuiTheme({
     },
 });
 
-type RegisterViewProps = {
+type SignInComponentProps = {
     RedirectTo: Function
+    SetUser: Function
 }
 
-type RegisterViewState = {
+type SignInComponentState = {
     choiceMade: boolean
     validEntry: boolean | undefined
 }
 
 
-class RegisterView extends React.Component<RegisterViewProps, RegisterViewState> {
+class SignInComponent extends React.Component<SignInComponentProps, SignInComponentState> {
     
     username: string 
     password: string 
@@ -80,30 +83,34 @@ class RegisterView extends React.Component<RegisterViewProps, RegisterViewState>
         let response = await fetch("http://localhost:8080/api/v1/Users/"+this.username)
         let jsonResponse = await response.json()
 
-        if(Object.keys(jsonResponse).length === 0){
-            console.log(jsonResponse)
-            console.log("ok")
-            
-            // POST our user 
-            await fetch("http://localhost:8080/api/v1/PostUsers", {
-                method: 'POST',
-                body: JSON.stringify({Username: this.username, Password: this.password, ID: 0})
-            })
-
-            this.setState({
-                validEntry: true,
-                choiceMade: true
-            })
-            await new Promise(r => setTimeout(r, 2000)); // wait for our animation to finish
-            this.props.RedirectTo("/")
-
-            
-        }
-        else {
+        if(Object.keys(jsonResponse).length === 0){ // not in system
             this.setState({
                 validEntry: false,
                 choiceMade: false
             })
+        }
+        else {
+
+            if(jsonResponse.Password != this.password){ // incorrect password
+                this.setState({
+                    validEntry: false,
+                    choiceMade: false
+                })
+            }
+            else {
+                
+                this.props.SetUser(this.username)
+                this.setState({
+                    choiceMade: true
+                })
+                await new Promise(r => setTimeout(r, 500)); // wait for our animation to finish
+                this.setState({
+                    validEntry: true
+                })
+                await new Promise(r => setTimeout(r, 500)); // wait for our animation to finish
+                this.props.RedirectTo("/homepage")
+            }
+           
         }
 
     }
@@ -121,9 +128,9 @@ class RegisterView extends React.Component<RegisterViewProps, RegisterViewState>
         if(this.state.validEntry != undefined && !this.state.validEntry){
             return (
                 <MuiThemeProvider theme={TextFieldTheme}>
-                <div className="RegisterView">
+                <div className="SignInComponent">
                     <img className="LoginPageLogo" src={Logo} />
-                    <p>Username is already taken. Please try again</p>
+                    <p>Login credentials do not match any in our system. Please try again.</p>
                     <TransitionTextInput text="Username" onChange={this.updateUsername.bind(this)} listen={this.state.choiceMade} />
                     <TransitionTextInput text="Password" onChange={this.updatePassword.bind(this)} listen={this.state.choiceMade} />
                     <TransitionButton color="primary" text = "Submit" onClick={this.submit.bind(this)} listen={this.state.choiceMade}/>
@@ -135,16 +142,16 @@ class RegisterView extends React.Component<RegisterViewProps, RegisterViewState>
         else if(this.state.validEntry != undefined && this.state.validEntry){
             return (
             <MuiThemeProvider theme={TextFieldTheme}>
-                <div className="RegisterView">
+                <div className="SignInComponent">
                     <img className="LoginPageLogo" src={Logo} />
-                    <p>Account Successfully Created!</p>
+                    <p>Success!</p>
                 </div>
             </MuiThemeProvider>
             )
         }
         return(
             <MuiThemeProvider theme={TextFieldTheme}>
-                <div className="RegisterView">
+                <div className="SignInComponent">
                     <img className="LoginPageLogo" src={Logo} />
                     <TransitionTextInput text="Username" onChange={this.updateUsername.bind(this)} listen={this.state.choiceMade} />
                     <TransitionTextInput text="Password" onChange={this.updatePassword.bind(this)} listen={this.state.choiceMade} />
@@ -156,4 +163,4 @@ class RegisterView extends React.Component<RegisterViewProps, RegisterViewState>
     }
 }
 
-export default RegisterView;
+export default SignInComponent;
