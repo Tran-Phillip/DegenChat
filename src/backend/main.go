@@ -6,6 +6,8 @@ import (
 	"github.com/Tran-Phillip/DegenChat/pkg/api"
 )
 
+
+
 func main() {
 	r := mux.NewRouter()
 
@@ -23,7 +25,11 @@ func main() {
 
 	// Rooms
 	r.HandleFunc("/api/v1/Rooms", Rooms.GETAllRooms)
+	r.HandleFunc("/api/v1/Rooms/{username}", Rooms.GETRoomsByUser)
 	r.HandleFunc("/api/v1/PostRoom", Rooms.POSTRoom).Methods("POST")
+	r.HandleFunc("/api/v1/OpenWS/{roomName}", Rooms.OpenWS)
+	r.HandleFunc("/api/v1/Join/{roomName}/{username}", Rooms.JoinRoom)
+
 
 	http.ListenAndServe(":8080", r)
 }

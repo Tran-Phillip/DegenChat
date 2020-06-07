@@ -37,7 +37,11 @@ const ButtonTheme = createMuiTheme({
 
 type UserPanelProps = {
     username: string,
-    addRoom: Function
+    addRoom: Function,
+    displayRooms: Function
+    appendMessage: Function
+    updateParent: Function
+    addSocket: Function
 }
 
 type UserPanelState = {
@@ -60,24 +64,66 @@ class UserPanel extends React.Component<UserPanelProps, UserPanelState>{
                 method: 'POST',
                 body: JSON.stringify({Name: roomName, UsersInRoom: [this.props.username]})
         })
+        let socket = new WebSocket("ws://localhost:8080/api/v1/OpenWS/" + roomName)
+            socket.onopen = () =>{
+                console.log("Socket connected: ")
+            }
+            socket.onmessage = (msg) => {
+                console.log("Msg got: ", msg)
+                let jsonMsg =JSON.parse(msg.data)
+                if(jsonMsg.type == 1){
+                    this.props.displayRooms()
+                }
+                else if(jsonMsg.type == 2){
+                    this.props.appendMessage(jsonMsg.body)
+                    this.props.updateParent()
+                }
+            }
+
+        this.props.addSocket(roomName, socket)
         this.props.addRoom(roomName)
-        
+    }
+
+    async joinRoom(){
+        let roomName = window.prompt("Room To Join: ");
+        await fetch("http://localhost:8080/api/v1/Join/"+roomName +"/" +this.props.username)
+        let socket = new WebSocket("ws://localhost:8080/api/v1/OpenWS/" + roomName)
+            socket.onopen = () =>{
+                console.log("Socket connected: ")
+            }
+            socket.onmessage = (msg) => {
+                console.log("Msg got: ", msg)
+                let jsonMsg =JSON.parse(msg.data)
+                if(jsonMsg.type == 1){
+                    this.props.displayRooms()
+                }
+                else if(jsonMsg.type == 2){
+                    this.props.appendMessage(jsonMsg.body)
+                    this.props.updateParent()
+                }
+            }
+
+        this.props.addSocket(roomName, socket)
+        this.props.addRoom(roomName)
+        this.props.addRoom("")
     }
 
     render(){
         return(
             <div className="UserPanel">
                 <div className="Panel">
-                    <img className="UserPanelLogo" src={Logo}></img>
-                    <div className="UsernameDisplay">
-                        <h1>{this.props.username}</h1>
+                    <div className="IconNameContainer">
+                        <img className="UserPanelLogo" src={Logo}></img>
+                        <div className="UsernameDisplay">
+                            <h1>{this.props.username}</h1>
+                        </div>
                     </div>
                     <div className="FriendsOnline">
-                        <p>Friends 1:</p>
-                        <p>Online</p>
+                        
                     </div>
                     <MuiThemeProvider theme={ButtonTheme}>
                         <Button color="primary" variant="contained" onClick={this.createNewRoom.bind(this)} > New Room </Button>
+                        <Button color="primary" variant="contained" onClick={this.joinRoom.bind(this)} > Join Room </Button>
                     </MuiThemeProvider>
                 </div>
             </div>

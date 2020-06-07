@@ -33,13 +33,15 @@ type LoginComponentRouterState = {
 
 class LoginComponentRouter extends React.Component<LoginCompnentRouterProps, LoginComponentRouterState> {
     
+    rooms:Array<string>
+
     constructor(props: any) {
         super(props);
         this.state = {
             redirectTo: "/",
             currentUser: ""
         }
-
+        this.rooms = []
     }
 
     setRedirect(_redirectTo: string){
@@ -54,18 +56,18 @@ class LoginComponentRouter extends React.Component<LoginCompnentRouterProps, Log
         })
     }
 
+
     render() {
-        console.log(this.state.redirectTo);
+
         return (
             <Router>
                 <Switch>
                     <Route path="/homepage" render={(props:any) => <UserHomePage {...props} username={this.state.currentUser} /> }/>
                     <Route path="/login" render={(props:any) => <SignInComponent {...props} RedirectTo={this.setRedirect.bind(this)} SetUser={this.setUser.bind(this)} />}/>
                     <Route path="/register" render={(props:any) => <RegisterView {...props} RedirectTo={this.setRedirect.bind(this)}/>}/>
-                    <Route path= "/" render={(props: any) => <LoginView {...props} RedirectTo={this.setRedirect.bind(this)}/>}/>
+                    <Route path= "/" render={() => <LoginView RedirectTo={this.setRedirect.bind(this)}/>}/>
                 </Switch>
                 <Redirect to={this.state.redirectTo}/>
-
             </Router>
         )
     }

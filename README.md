@@ -74,6 +74,9 @@ If the user selects login, the UI will prompt the user again for an email and pa
 
 
 # UserHomePage
+
+Once the User has been verified, the client will spin up a websocket to allow communicaiton back to the back end. Once a user has created or joined a room, we will send a message from our backend through that websocket to recreate the page with the updated information.  The websocket will have to be contained within the room struct for easy writing. 
+
 This component will be in charge of displaying a User Profile and all the rooms the user is a part of. It will allow these rooms to be clickable and will link the user to the room component view on click. This component will also allow the user to create a new room
 
 ## User Profile
