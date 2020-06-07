@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/DegenChat/static/css/main.553046b2.chunk.css",
+    "main.js": "/DegenChat/static/js/main.fafc3847.chunk.js",
+    "main.js.map": "/DegenChat/static/js/main.fafc3847.chunk.js.map",
+    "runtime-main.js": "/DegenChat/static/js/runtime-main.cdbb7b87.js",
+    "runtime-main.js.map": "/DegenChat/static/js/runtime-main.cdbb7b87.js.map",
+    "static/js/2.27e3ecdb.chunk.js": "/DegenChat/static/js/2.27e3ecdb.chunk.js",
+    "static/js/2.27e3ecdb.chunk.js.map": "/DegenChat/static/js/2.27e3ecdb.chunk.js.map",
+    "index.html": "/DegenChat/index.html",
+    "precache-manifest.74cf36c49cb555e61d3e904bbdf30532.js": "/DegenChat/precache-manifest.74cf36c49cb555e61d3e904bbdf30532.js",
+    "service-worker.js": "/DegenChat/service-worker.js",
+    "static/css/main.553046b2.chunk.css.map": "/DegenChat/static/css/main.553046b2.chunk.css.map",
+    "static/js/2.27e3ecdb.chunk.js.LICENSE.txt": "/DegenChat/static/js/2.27e3ecdb.chunk.js.LICENSE.txt",
+    "static/media/logo_black_white.png": "/DegenChat/static/media/logo_black_white.72e114df.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.cdbb7b87.js",
+    "static/js/2.27e3ecdb.chunk.js",
+    "static/css/main.553046b2.chunk.css",
+    "static/js/main.fafc3847.chunk.js"
+  ]
+}
